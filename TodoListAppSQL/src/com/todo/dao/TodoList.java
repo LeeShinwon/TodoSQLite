@@ -105,6 +105,34 @@ public class TodoList {
 		}
 		return list;
 	}
+	public ArrayList<TodoItem> getList(String keyword){//functon overloading
+		ArrayList<TodoItem> list = new ArrayList<TodoItem>();
+		PreparedStatement pstmt;
+		keyword = "%" +keyword +"%";
+		try {
+			String sql = "select * from list where title like ? or memo like ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, keyword);
+			pstmt.setString(2, keyword);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				int id = rs.getInt("id");
+				String category = rs.getString("category");
+				String title = rs.getString("title");
+				String description = rs.getString("memo");
+				String due_date = rs.getString("due_date");
+				String current_date = rs.getString("current_date");
+				TodoItem t = new TodoItem(title, category, description, current_date, due_date);
+				t.setId(id);
+				list.add(t);
+			}
+			pstmt.close();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 	public int getCount() {
 		Statement stmt;
 		int count=0;
@@ -187,5 +215,52 @@ public class TodoList {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public ArrayList<String> getCategories() {
+		ArrayList<String> list = new ArrayList<String>();
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			String sql = "select distinct category from list";//중복을 제외한 결과 받기
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				String category = rs.getString("category");
+				list.add(category);
+			}
+			stmt.close();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	public ArrayList<TodoItem> getListCategory(String cate) {
+		ArrayList<TodoItem> list = new ArrayList<TodoItem>();
+		PreparedStatement pstmt;
+		try {
+			String sql = "select * from list where category = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, cate);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				int id = rs.getInt("id");
+				String category = rs.getString("category");
+				String title = rs.getString("title");
+				String description = rs.getString("memo");
+				String due_date = rs.getString("due_date");
+				String current_date = rs.getString("current_date");
+				TodoItem t = new TodoItem(title, category, description, current_date, due_date);
+				t.setId(id);
+				list.add(t);
+			}
+			pstmt.close();
+			
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 }

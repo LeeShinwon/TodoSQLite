@@ -141,46 +141,28 @@ public class TodoUtil {
 			e.printStackTrace();
 		}
 	}
-	public static void FindKeyword(TodoList l, String keyword) {
-		int num=0;
-		for(int i=0; i<l.getList().size(); i++) {
-			if(l.getList().get(i).getTitle().contains(keyword) || l.getList().get(i).getDesc().contains(keyword)) {
-				System.out.println(i+1+". "+l.getList().get(i).toString());
-				num++;
-			}
+	public static void FindList(TodoList l, String keyword) {
+		int count=0;
+		for(TodoItem item: l.getList(keyword)) {
+			System.out.println(item.toString());
+			count++;
 		}
-		System.out.println("총 "+num+"개의 항목을 찾았습니다.");
+		System.out.println("총 "+count+"개의 항목을 찾았습니다.");
 	}
-	public static void FindCateKeyword(TodoList l, String keyword) {
-		int num=0;
-		for(int i=0; i<l.getList().size(); i++) {
-			if(l.getList().get(i).getCategory().contains(keyword)) {
-				System.out.println(i+1+". "+l.getList().get(i).toString());
-				num++;
-			}
+	public static void FindCateList(TodoList l, String cate) {
+		int count=0;
+		for(TodoItem item:l.getListCategory(cate)) {
+			System.out.println(item.toString());
+			count++;
 		}
-		System.out.println("총 "+num+"개의 항목을 찾았습니다.");
+		System.out.println("총 "+count+"개의 항목을 찾았습니다.");
 	}
 	public static void listCate(TodoList l) {
-		Set<String> clist = new HashSet<String>();
-		
-		for(int i=0; i<l.getList().size(); i++) {
-			clist.add(l.getList().get(i).getCategory());
+		int count=0;
+		for(String item: l.getCategories()) {
+			System.out.println(item +" ");
+			count++;
 		}
-		
-		Iterator it =clist.iterator();
-		
-		while(it.hasNext()) {
-			String s = (String) it.next();
-			System.out.print(s);
-			if(it.hasNext()) {
-				System.out.print(" / ");
-			}
-			else {
-				System.out.println();
-			}
-		}
-		System.out.println("총 "+clist.size()+"개의 카테고리가 등록되어 있습니다.");
-		
+		System.out.printf("\n총 %d개의 카테고리가 등록되어 있습니다.\n", count);
 	}
 }

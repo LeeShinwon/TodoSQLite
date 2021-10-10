@@ -69,11 +69,11 @@ public class TodoMain {
 				break;
 				
 			case "find":
-				TodoUtil.FindKeyword(l, sc.next());
+				TodoUtil.FindList(l, sc.next());
 				break;
 				
 			case "find_cate":
-				TodoUtil.FindCateKeyword(l, sc.next());
+				TodoUtil.FindCateList(l, sc.next());
 				break;
 			case "ls_cate":
 				TodoUtil.listCate(l);
