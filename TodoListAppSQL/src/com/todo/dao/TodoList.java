@@ -177,8 +177,23 @@ public class TodoList {
 	}
 
 	public Boolean isDuplicate(String title) {
-		for (TodoItem item : list) {
-			if (title.equals(item.getTitle())) return true;
+		PreparedStatement pstmt;
+	
+		try {
+			String sql = "select * from list where title like ? ";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, title);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				String vstitle = rs.getString("title");
+				if (title.equals(vstitle)) {
+					pstmt.close();
+					return true;
+				}
+			}
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
 		}
 		return false;
 	}
@@ -259,6 +274,35 @@ public class TodoList {
 			
 		}
 		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	public ArrayList<TodoItem> getOrderedList(String orderby, int ordering) {
+		ArrayList<TodoItem> list = new ArrayList<TodoItem>();
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			String sql = "select * from list order by "+ orderby;
+			if(ordering==0) {
+				sql+=" desc";
+			}
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				int id = rs.getInt("id");
+				String category = rs.getString("category");
+				String title = rs.getString("title");
+				String description = rs.getString("memo");
+				String due_date = rs.getString("due_date");
+				String current_date = rs.getString("current_date");
+				TodoItem t = new TodoItem(title, category, description, current_date, due_date);
+				t.setId(id);
+				list.add(t);
+			}
+			stmt.close();
+			
+		}catch(SQLException e) {
 			e.printStackTrace();
 		}
 		return list;

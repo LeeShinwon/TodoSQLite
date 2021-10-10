@@ -24,10 +24,10 @@ public class TodoUtil {
 				+ "제목 > ");
 		
 		title = sc.next();
-		/*if (list.isDuplicate(title)) {
-			System.out.printf("\n이미 존재하는 제목은 사용할 수 없습니다.");
+		if (list.isDuplicate(title)) {
+			System.out.printf("\n제목이 중복됩니다.");
 			return;
-		}*/
+		}
 		System.out.println("카테고리 > ");
 		cate = sc.next();
 		
@@ -164,5 +164,13 @@ public class TodoUtil {
 			count++;
 		}
 		System.out.printf("\n총 %d개의 카테고리가 등록되어 있습니다.\n", count);
+	}
+
+	public static void listAll(TodoList l, String orderby, int ordering) {//finction overloading
+		System.out.printf("[전체 목록, 총 %d개]\n", l.getCount());
+		for(TodoItem item: l.getOrderedList(orderby, ordering)) {
+			System.out.println(item.toString());
+		}
+		
 	}
 }
