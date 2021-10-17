@@ -11,22 +11,36 @@ public class TodoItem {
     private String due_date;
     private int id;
     private int is_comp;
+    private int importance;
+    private int take_day;
     
 
 
-    public int getIs_comp() {
+    public int getImportance() {
+		return importance;
+	}
+	public void setImportance(int importance) {
+		this.importance = importance;
+	}
+	public int getTake_day() {
+		return take_day;
+	}
+	public void setTake_day(int take_day) {
+		this.take_day = take_day;
+	}
+	public int getIs_comp() {
 		return is_comp;
 	}
 	public void setIs_comp(int is_comp) {
 		this.is_comp = is_comp;
 	}
-	public TodoItem(String title, String cate, String desc){//date가 정해지지 않은 경우 
+	public TodoItem(String title, String cate, String desc,String due_date){//date가 정해지지 않은 경우 
         this.title=title;
         this.desc=desc;
         SimpleDateFormat f = new SimpleDateFormat("yyyy/MM/dd kk:mm:ss");
         this.current_date=f.format(new Date());
         this.category=cate;
-        this.due_date=current_date.split(" ")[0];
+        this.due_date=due_date;
         
     }
     public TodoItem(String title, String cate, String desc, String date, String due){//date가 이미 정해진 경우 
@@ -80,10 +94,10 @@ public class TodoItem {
 	@Override
 	public String toString() {
 		if(is_comp==0) {
-			return id+  " [ ]"+ " ["+ category + "] "+ title+ " - "  + desc+ " - " + due_date+ " - "+current_date;
+			return id+  " [        ]"+ " ["+ category + "] "+ title+ " - "  + desc+ " - " + due_date+ " - "+current_date;
 		}
 		else{
-			return id+  " [V]"+" ["+ category + "] "+ title+" - "  + desc+ " - " + due_date+ " - "+current_date;
+			return id+  " [V"+": "+take_day+"days]"+" ["+ category + "] "+ title+" - "  + desc+ " - " + due_date+ " - "+current_date;
 		}
 	}
 

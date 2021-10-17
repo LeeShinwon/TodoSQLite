@@ -16,7 +16,7 @@ public class TodoUtil {
 	
 	public static void createItem(TodoList list) {
 		
-		String title, desc, cate;
+		String title, desc, cate,due_date;
 		Scanner sc = new Scanner(System.in);
 		
 		System.out.println("\n"
@@ -34,11 +34,11 @@ public class TodoUtil {
 		System.out.println("내용 > ");
 		sc.nextLine();
 		desc = sc.nextLine().trim();
-		/*System.out.print("마감일자 > ");
+		System.out.print("마감일자 > ");
 		due_date = sc.nextLine().trim();
-		등록 시, 마감일자는 자동으로 current_date와 동일하다고 생각하여 사용자 입력이 아닌 자동 등록이 되도록 해놓았습니다.*/
 		
-		TodoItem t = new TodoItem(title, cate, desc);
+		
+		TodoItem t = new TodoItem(title, cate, desc,due_date);
 		if(list.addItem(t)>0) {
 			System.out.println("추가되었습니다. ");
 		}
@@ -169,7 +169,8 @@ public class TodoUtil {
 	public static void listAll(TodoList l, String orderby, int ordering) {//finction overloading
 		System.out.printf("[전체 목록, 총 %d개]\n", l.getCount());
 		for(TodoItem item: l.getOrderedList(orderby, ordering)) {
-			System.out.println(item.toString());
+			System.out.println(orderby=="importance"?item.toString()+"[importance: "
+		+item.getImportance()+"]":item.toString());
 		}
 		
 	}
@@ -191,6 +192,13 @@ public class TodoUtil {
 			}
 		}
 		System.out.printf("총 %d개의 항목이 완료되었습니다.\n", count);
+		
+	}
+
+	public static void importantItem(TodoList l, int num) {
+		if(l.importantItem(num)>0) {
+			System.out.println("중요도를 추가가 완료되었습니다.");
+		}
 		
 	}
 }

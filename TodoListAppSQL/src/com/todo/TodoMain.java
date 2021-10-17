@@ -84,6 +84,13 @@ public class TodoMain {
 			case "ls_comp":
 				TodoUtil.listAll(l,1);
 				break;
+			case "importance":
+				TodoUtil.importantItem(l,sc.nextInt());
+				break;
+			case "ls_importance":
+				System.out.println("중요도순으로 정렬하였습니다. ");
+				TodoUtil.listAll(l,"importance",0);
+				break;
 				
 			default:
 				System.out.println("정확한 명령어를 입력하세요. (도움말 - help)");

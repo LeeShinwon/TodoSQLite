@@ -15,7 +15,11 @@ public class Menu {
         System.out.println("9.  키워드 목록 ( find <키워드> )");
         System.out.println("10. 카테고리 목록 ( find_cate <키워드> )");
         System.out.println("11. 카테고리 목록 ( ls_cate )");
-        System.out.println("12. 종료 (exit)");
+        System.out.println("12. 완료된 목록 ( ls_comp )");
+        System.out.println("13. 완료체크 ( comp <id> )");
+        System.out.println("14. 중요도 추가 ( importance <id> )");
+        System.out.println("15. 중요도 정렬 ( ls_importance )");
+        System.out.println("16. 종료 (exit)");
     }
     public static void prompt() {
     	System.out.println("\nCommand > ");

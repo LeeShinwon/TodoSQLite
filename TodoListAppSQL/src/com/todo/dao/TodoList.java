@@ -92,6 +92,8 @@ public class TodoList {
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()) {
 				int id = rs.getInt("id");
+				int take_day = rs.getInt("take_day");
+				int importance = rs.getInt("importance");
 				String category = rs.getString("category");
 				String title = rs.getString("title");
 				String description = rs.getString("memo");
@@ -100,6 +102,8 @@ public class TodoList {
 				int is_comp = rs.getInt("is_completed");
 				TodoItem t = new TodoItem(title, category, description, current_date, due_date);
 				t.setId(id);
+				t.setImportance(importance);
+				t.setTake_day(take_day);
 				t.setIs_comp(is_comp);
 				list.add(t);
 			}
@@ -121,6 +125,8 @@ public class TodoList {
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				int id = rs.getInt("id");
+				int take_day = rs.getInt("take_day");
+				int importance = rs.getInt("importance");
 				int is_comp = rs.getInt("is_completed");
 				String category = rs.getString("category");
 				String title = rs.getString("title");
@@ -129,6 +135,8 @@ public class TodoList {
 				String current_date = rs.getString("current_date");
 				TodoItem t = new TodoItem(title, category, description, current_date, due_date);
 				t.setId(id);
+				t.setImportance(importance);
+				t.setTake_day(take_day);
 				t.setIs_comp(is_comp);
 				list.add(t);
 			}
@@ -267,6 +275,8 @@ public class TodoList {
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				int id = rs.getInt("id");
+				int take_day = rs.getInt("take_day");
+				int importance = rs.getInt("importance");
 				int is_comp = rs.getInt("is_completed");
 				String category = rs.getString("category");
 				String title = rs.getString("title");
@@ -275,6 +285,8 @@ public class TodoList {
 				String current_date = rs.getString("current_date");
 				TodoItem t = new TodoItem(title, category, description, current_date, due_date);
 				t.setId(id);
+				t.setImportance(importance);
+				t.setTake_day(take_day);
 				t.setIs_comp(is_comp);
 				list.add(t);
 			}
@@ -299,14 +311,19 @@ public class TodoList {
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()) {
 				int id = rs.getInt("id");
+				int take_day = rs.getInt("take_day");
+				int importance = rs.getInt("importance");
 				int is_comp = rs.getInt("is_completed");
 				String category = rs.getString("category");
 				String title = rs.getString("title");
 				String description = rs.getString("memo");
 				String due_date = rs.getString("due_date");
 				String current_date = rs.getString("current_date");
+				
 				TodoItem t = new TodoItem(title, category, description, current_date, due_date);
 				t.setId(id);
+				t.setImportance(importance);
+				t.setTake_day(take_day);
 				t.setIs_comp(is_comp);
 				list.add(t);
 			}
@@ -319,8 +336,33 @@ public class TodoList {
 	}
 
 	public int completeItem(int num) {
+		System.out.println("완료하는 데 소요된 일 수 : ");
+		Scanner sc = new Scanner(System.in);
+		int day = sc.nextInt();
 		Statement stmt;
-		String sql = "update list set is_completed='1' "
+		String sql = "update list set is_completed='1' "+", take_day='"+day+"' "
+				+ "where id ='"+num+"';";
+		int count=0;
+		try {
+			stmt = con.createStatement();
+			count= stmt.executeUpdate(sql);//update된 것의 개수?
+			
+			stmt.close();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+		
+	}
+
+	public int importantItem(int num) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("중요도 입력 : ");
+		int importance= sc.nextInt();
+		
+		Statement stmt;
+		String sql = "update list set importance = '"+importance+"' "
 				+ "where id ='"+num+"';";
 		int count=0;
 		try {
