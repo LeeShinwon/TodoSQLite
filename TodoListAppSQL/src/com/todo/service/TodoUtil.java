@@ -52,7 +52,7 @@ public class TodoUtil {
 				+ "[항목 삭제]\n"
 				+ "삭제할 항목의 번호를 입력하시오 > ");
 		int num = sc.nextInt();
-		if(l.deleteItem(num)>0) {
+		if(l.deleteItem(num,l)>0) {
 			System.out.println("삭제되었습니다.");
 		}
 		
@@ -198,6 +198,22 @@ public class TodoUtil {
 	public static void importantItem(TodoList l, int num) {
 		if(l.importantItem(num)>0) {
 			System.out.println("중요도를 추가가 완료되었습니다.");
+		}
+		
+	}
+
+	public static void listDel(TodoList l) {
+		System.out.println("[삭제된 전체 목록, 총 "+l.getListDel().size()+"개]");
+		for(TodoItem item: l.getListDel()) {
+			System.out.println(item.toString());
+		}
+		
+	}
+
+
+	public static void restore(TodoList l, int num) {
+		if(l.restore(num)>0) {
+			System.out.println("선택한 목록을 복구 완료되었습니다.");
 		}
 		
 	}

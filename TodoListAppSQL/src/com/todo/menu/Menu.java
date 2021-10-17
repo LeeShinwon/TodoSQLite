@@ -19,7 +19,9 @@ public class Menu {
         System.out.println("13. 완료체크 ( comp <id> )");
         System.out.println("14. 중요도 추가 ( importance <id> )");
         System.out.println("15. 중요도 정렬 ( ls_importance )");
-        System.out.println("16. 종료 (exit)");
+        System.out.println("16. 삭제된 목록 ( ls_del )");
+        System.out.println("17. 복구 ( restore <id> )");
+        System.out.println("18. 종료 (exit)");
     }
     public static void prompt() {
     	System.out.println("\nCommand > ");

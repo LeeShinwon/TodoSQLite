@@ -44,19 +44,52 @@ public class TodoList {
 		return count;
 	}
 
-	public int deleteItem(int index) {
-		String sql = "delete from list where id=?;";
+	public int deleteItem(int index, TodoList l) {
+		String sql1 = "insert into deletelist (id,title, memo, category, current_date, due_date,is_completed, take_day, importance)"
+				+" values (?,?,?,?,?,?,?,?,?);";
 		PreparedStatement pstmt;
+		
 		int count=0;
 		try {
-			pstmt= con.prepareStatement(sql);
-			pstmt.setInt(1, index);
-			count= pstmt.executeUpdate();
+			TodoItem t=l.getList().get(1);//initialize
+			for(TodoItem t1:l.getList()) {
+				if(t1.getId()==index) {
+					t=t1;
+					break;
+				}
+			}
+			pstmt = con.prepareStatement(sql1);
+			pstmt.setInt(1, t.getId());
+			pstmt.setString(2, t.getTitle());
+			pstmt.setString(3, t.getDesc());
+			pstmt.setString(4, t.getCategory());
+			pstmt.setString(5, t.getCurrent_date());
+			pstmt.setString(6, t.getDue_date());
+			pstmt.setInt(7, t.getIs_comp());
+			pstmt.setInt(8, t.getTake_day());
+			pstmt.setInt(9, t.getImportance());
+			count = pstmt.executeUpdate();
 			pstmt.close();
 			
+			if(count>0) {
+				String sql = "delete from list where id=?;";
+				count=0;
+				try {
+					pstmt= con.prepareStatement(sql);
+					pstmt.setInt(1, index);
+					count= pstmt.executeUpdate();
+					pstmt.close();
+					
+				}catch(SQLException e) {
+					e.printStackTrace();
+				}
+		}
+			
+	
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
+		
 		return count;
 	}
 
@@ -378,5 +411,104 @@ public class TodoList {
 		
 	}
 
-	
+	public ArrayList<TodoItem> getListDel() {
+		ArrayList<TodoItem>  list = new ArrayList<TodoItem>();
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			String sql = "select * from deletelist";
+			
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				int id = rs.getInt("id");
+				int take_day = rs.getInt("take_day");
+				int importance = rs.getInt("importance");
+				String category = rs.getString("category");
+				String title = rs.getString("title");
+				String description = rs.getString("memo");
+				String due_date = rs.getString("due_date");
+				String current_date = rs.getString("current_date");
+				int is_comp = rs.getInt("is_completed");
+				TodoItem t = new TodoItem(title, category, description, current_date, due_date);
+				t.setId(id);
+				t.setImportance(importance);
+				t.setTake_day(take_day);
+				t.setIs_comp(is_comp);
+				list.add(t);
+			}
+			stmt.close();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	public int restore(int num) {
+		int count=0;
+		Statement stmt;
+		
+		try {
+			stmt = con.createStatement();
+			String sql = "select * from deletelist where id='"+num+"'";
+			
+			ResultSet rs = stmt.executeQuery(sql);
+			rs.next();
+			int id = rs.getInt("id");
+			int take_day = rs.getInt("take_day");
+			int importance = rs.getInt("importance");
+			String category = rs.getString("category");
+			String title = rs.getString("title");
+			String description = rs.getString("memo");
+			String due_date = rs.getString("due_date");
+			String current_date = rs.getString("current_date");
+			int is_comp = rs.getInt("is_completed");
+			TodoItem t = new TodoItem(title, category, description, current_date, due_date);
+			t.setId(id);
+			t.setImportance(importance);
+			t.setTake_day(take_day);
+			t.setIs_comp(is_comp);
+			if(t!=null) {
+				String sql1 = "insert into list (id,title, memo, category, current_date, due_date,is_completed, take_day, importance)"
+						+" values (?,?,?,?,?,?,?,?,?);";
+				PreparedStatement pstmt;
+				
+				count=0;
+				try {
+					pstmt = con.prepareStatement(sql1);
+					pstmt.setInt(1, t.getId());
+					pstmt.setString(2, t.getTitle());
+					pstmt.setString(3, t.getDesc());
+					pstmt.setString(4, t.getCategory());
+					pstmt.setString(5, t.getCurrent_date());
+					pstmt.setString(6, t.getDue_date());
+					pstmt.setInt(7, t.getIs_comp());
+					pstmt.setInt(8, t.getTake_day());
+					pstmt.setInt(9, t.getImportance());
+					count = pstmt.executeUpdate();
+					pstmt.close();
+					
+					if(count>0) {
+						sql = "delete from deletelist where id=?;";
+						count=0;
+						try {
+							pstmt= con.prepareStatement(sql);
+							pstmt.setInt(1, num);
+							count= pstmt.executeUpdate();
+							pstmt.close();
+							
+						}catch(SQLException e) {
+							e.printStackTrace();
+						}
+				}
+				}
+				catch(SQLException e) {
+					e.printStackTrace();
+				}
+				stmt.close();
+			}
+	}catch(SQLException e) {
+		e.printStackTrace();
+	}
+	return count;
+	}
 }
