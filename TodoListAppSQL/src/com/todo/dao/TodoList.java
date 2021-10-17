@@ -35,6 +35,7 @@ public class TodoList {
 			pstmt.setString(5, t.getDue_date());
 			count = pstmt.executeUpdate();
 			pstmt.close();
+		
 			
 			
 		}catch(SQLException e) {
@@ -87,6 +88,7 @@ public class TodoList {
 		try {
 			stmt = con.createStatement();
 			String sql = "select * from list";
+			
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()) {
 				int id = rs.getInt("id");
@@ -95,8 +97,10 @@ public class TodoList {
 				String description = rs.getString("memo");
 				String due_date = rs.getString("due_date");
 				String current_date = rs.getString("current_date");
+				int is_comp = rs.getInt("is_completed");
 				TodoItem t = new TodoItem(title, category, description, current_date, due_date);
 				t.setId(id);
+				t.setIs_comp(is_comp);
 				list.add(t);
 			}
 			stmt.close();
@@ -117,6 +121,7 @@ public class TodoList {
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				int id = rs.getInt("id");
+				int is_comp = rs.getInt("is_completed");
 				String category = rs.getString("category");
 				String title = rs.getString("title");
 				String description = rs.getString("memo");
@@ -124,6 +129,7 @@ public class TodoList {
 				String current_date = rs.getString("current_date");
 				TodoItem t = new TodoItem(title, category, description, current_date, due_date);
 				t.setId(id);
+				t.setIs_comp(is_comp);
 				list.add(t);
 			}
 			pstmt.close();
@@ -261,6 +267,7 @@ public class TodoList {
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				int id = rs.getInt("id");
+				int is_comp = rs.getInt("is_completed");
 				String category = rs.getString("category");
 				String title = rs.getString("title");
 				String description = rs.getString("memo");
@@ -268,6 +275,7 @@ public class TodoList {
 				String current_date = rs.getString("current_date");
 				TodoItem t = new TodoItem(title, category, description, current_date, due_date);
 				t.setId(id);
+				t.setIs_comp(is_comp);
 				list.add(t);
 			}
 			pstmt.close();
@@ -291,6 +299,7 @@ public class TodoList {
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()) {
 				int id = rs.getInt("id");
+				int is_comp = rs.getInt("is_completed");
 				String category = rs.getString("category");
 				String title = rs.getString("title");
 				String description = rs.getString("memo");
@@ -298,6 +307,7 @@ public class TodoList {
 				String current_date = rs.getString("current_date");
 				TodoItem t = new TodoItem(title, category, description, current_date, due_date);
 				t.setId(id);
+				t.setIs_comp(is_comp);
 				list.add(t);
 			}
 			stmt.close();
@@ -307,4 +317,24 @@ public class TodoList {
 		}
 		return list;
 	}
+
+	public int completeItem(int num) {
+		Statement stmt;
+		String sql = "update list set is_completed='1' "
+				+ "where id ='"+num+"';";
+		int count=0;
+		try {
+			stmt = con.createStatement();
+			count= stmt.executeUpdate(sql);//update된 것의 개수?
+			
+			stmt.close();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+		
+	}
+
+	
 }

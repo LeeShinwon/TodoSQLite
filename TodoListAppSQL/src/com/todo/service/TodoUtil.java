@@ -173,4 +173,24 @@ public class TodoUtil {
 		}
 		
 	}
+
+	public static void completeItem(TodoList l, int num) {
+		if(l.completeItem(num)>0) {
+			System.out.println("완료 체크하였습니다.");
+		}
+		
+		
+	}
+
+	public static void listAll(TodoList l, int i) {
+		int count=0;
+		for(TodoItem item: l.getList()) {
+			if(item.getIs_comp()==1) {
+				System.out.println(item.toString());
+				count++;
+			}
+		}
+		System.out.printf("총 %d개의 항목이 완료되었습니다.\n", count);
+		
+	}
 }

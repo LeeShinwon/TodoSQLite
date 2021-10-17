@@ -76,7 +76,15 @@ public class TodoMain {
 			case "exit":
 				quit = true;
 				break;
-
+				
+			case "comp":
+				TodoUtil.completeItem(l,sc.nextInt());
+				break;
+				
+			case "ls_comp":
+				TodoUtil.listAll(l,1);
+				break;
+				
 			default:
 				System.out.println("정확한 명령어를 입력하세요. (도움말 - help)");
 				break;

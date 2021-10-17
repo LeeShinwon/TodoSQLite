@@ -3,6 +3,7 @@ package com.todo.service;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class DbConnect {
@@ -22,7 +23,10 @@ public class DbConnect {
 		if(con==null) {
 			try {
 				Class.forName("org.sqlite.JDBC");//SQLite JDBC 체크 
-				con = DriverManager.getConnection("jdbc:sqlite:"+"todolist.db");//SQLite db 파일에 연결 
+				con = DriverManager.getConnection("jdbc:sqlite:"+"todolist.db");//SQLite db 파일에 연결
+				//Statement stat2 = con.createStatement();
+				//String sql2 = "alter table list add column is_completed integer default 0;";
+				//int cnt = stat2.executeUpdate(sql2);//update된 것의 개수?
 			}catch(Exception e) {
 				e.printStackTrace();
 			}

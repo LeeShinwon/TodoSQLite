@@ -10,10 +10,17 @@ public class TodoItem {
     private String category;
     private String due_date;
     private int id;
+    private int is_comp;
     
 
 
-    public TodoItem(String title, String cate, String desc){//date가 정해지지 않은 경우 
+    public int getIs_comp() {
+		return is_comp;
+	}
+	public void setIs_comp(int is_comp) {
+		this.is_comp = is_comp;
+	}
+	public TodoItem(String title, String cate, String desc){//date가 정해지지 않은 경우 
         this.title=title;
         this.desc=desc;
         SimpleDateFormat f = new SimpleDateFormat("yyyy/MM/dd kk:mm:ss");
@@ -72,7 +79,12 @@ public class TodoItem {
 	}
 	@Override
 	public String toString() {
-		return id+ " ["+ category + "] "+ title+ " - "  + desc+ " - " + due_date+ " - "+current_date;
+		if(is_comp==0) {
+			return id+  " [ ]"+ " ["+ category + "] "+ title+ " - "  + desc+ " - " + due_date+ " - "+current_date;
+		}
+		else{
+			return id+  " [V]"+" ["+ category + "] "+ title+" - "  + desc+ " - " + due_date+ " - "+current_date;
+		}
 	}
 
 	public String toSaveString() {
